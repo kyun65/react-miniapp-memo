@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 
 export default function Top() {
 
   const [text,seText] = useState<string>("");
-  const [memo,setMemo] = useState<string[]>([]);
+  const [memo,setMemo] = useState<string[]>(()=> {
+    const saved = localStorage.getItem("memos");
+    return saved ? JSON.parse(saved): [];
+  });
 
 
   //入力検知
@@ -14,18 +17,25 @@ export default function Top() {
   }
 
 
+  useEffect(()=> {
+    localStorage.setItem('memos',JSON.stringify(memo))
+  },[memo])
+
+
   //追加
   const onAdd = () => {
     if (text.trim() === "") return;
-    setMemo([...memo,text]);
+
+    const newMemos = [...memo,text];
+    setMemo(newMemos);
     seText("");
   }
-
 
   //削除
   const onDelete = (index:number) => {
     setMemo(memo.filter((_, i)=> i !== index ));
   }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

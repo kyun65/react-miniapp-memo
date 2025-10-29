@@ -6,4 +6,5 @@ export default defineConfig({
   css: {
     postcss: "./postcss.config.js", // ← これが超重要
   },
+  base: "/react-miniapp-memo/",
 });
